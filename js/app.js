@@ -104,10 +104,10 @@ function createModalHTML(employee) {
   modal.appendChild(button);
   modal.appendChild(modalInfoContainer);
 
-  const btnCont = createEl('div', 'modal-btn-container');
-  btnCont.innerHTML = `<button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
-                        <button type="button" id="modal-next" class="modal-next btn">Next</button>`;
-  modalContDiv.appendChild(btnCont);
+  // const btnCont = createEl('div', 'modal-btn-container');
+  // btnCont.innerHTML = `<button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
+  //                       <button type="button" id="modal-next" class="modal-next btn">Next</button>`;
+  // modalContDiv.appendChild(btnCont);
 
   modalContDiv.style.display = 'none';
 }
@@ -141,7 +141,7 @@ gallery.addEventListener('click', (e) => {
 // ------------------------------------------
 //  HTML
 // ------------------------------------------
-search.innerHTML = `<form action="#" method="get">
-                    <input type="search" id="search-input" class="search-input" placeholder="Search...">
-                    <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
-                    </form>`;
+// search.innerHTML = `<form action="#" method="get">
+//                     <input type="search" id="search-input" class="search-input" placeholder="Search...">
+//                     <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
+//                     </form>`;
