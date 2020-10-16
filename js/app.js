@@ -20,7 +20,7 @@ function fetchData(url) {
 
 Promise.all([
   fetchData(
-    'https://randomuser.me/api/?results=12&inc=picture,name,email,location,cell,dob'
+    'https://randomuser.me/api/?results=12&inc=picture,name,email,location,cell,dob&nat=us,gb,au,ca'
   ),
 ]).then((data) => {
   data.forEach((employees) => {
@@ -77,7 +77,8 @@ function createModalHTML(employee) {
   const email = employee.email;
   const location = employee.location; // lots of location info!
   const cell = employee.cell;
-  const dob = employee.dob.date; // date needs formating
+  const dob = new Date(employee.dob.date);
+  const formattedDOB = dob.toLocaleDateString();
 
   const modalContDiv = createEl('div', 'modal-container');
   const modal = createEl('div', 'modal');
@@ -95,7 +96,7 @@ function createModalHTML(employee) {
                         <hr>
                         <p class="modal-text">${cell}</p>
                         <p class="modal-text">${location.street.number} ${location.street.name}, ${location.city}, ${location.state} ${location.postcode}</p>
-                        <p class="modal-text">Birthday: 10/21/2015</p>`;
+                        <p class="modal-text">Birthday: ${formattedDOB}</p>`;
 
   modalInfoContainer.innerHTML = infoContHTML;
 
