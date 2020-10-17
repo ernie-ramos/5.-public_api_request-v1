@@ -2,6 +2,7 @@ const gallery = document.getElementById('gallery');
 const body = gallery.parentNode;
 const search = document.querySelector('.search-container');
 const modalBtnCont = document.getElementsByClassName('modal-btn-container');
+const numOfAPIresults = 12;
 
 // ------------------------------------------
 //  FETCH FUNCTIONS
@@ -20,13 +21,13 @@ function fetchData(url) {
 
 Promise.all([
   fetchData(
-    'https://randomuser.me/api/?results=12&inc=picture,name,email,location,cell,dob&nat=us,gb,au,ca'
+    `https://randomuser.me/api/?results=${numOfAPIresults}&inc=picture,name,email,location,cell,dob&nat=us,gb,au,ca`
   ),
 ]).then((data) => {
   data.forEach((employees) => {
-    employees.results.forEach((employee) => {
-      createGalleryHTML(employee);
-      createModalHTML(employee);
+    employees.results.forEach((employee, index) => {
+      createGalleryHTML(employee, index);
+      createModalHTML(employee, index);
     });
   });
 });
@@ -42,19 +43,20 @@ function checkStatus(response) {
   }
 }
 
-const createEl = (elem, claName) => {
+const createEl = (elem, claName, index) => {
   const e = document.createElement(elem);
   e.className = claName;
+  e.id = index;
   return e;
 };
 
-function createGalleryHTML(employee) {
+function createGalleryHTML(employee, index) {
   const pictures = employee.picture; //all three formats
   const fullName = employee.name; // title, first, and last
   const email = employee.email;
   const location = employee.location; // lots of location info!
 
-  const cardDiv = createEl('div', 'card');
+  const cardDiv = createEl('div', 'card', index);
   const cardImgContainer = createEl('div', 'card-img-container');
   const cardInfoContainer = createEl('div', 'card-info-container');
 
@@ -71,7 +73,7 @@ function createGalleryHTML(employee) {
   cardDiv.appendChild(cardInfoContainer);
 }
 
-function createModalHTML(employee) {
+function createModalHTML(employee, index) {
   const pictures = employee.picture; //all three formats
   const fullName = employee.name; // title, first, and last
   const email = employee.email;
@@ -80,7 +82,7 @@ function createModalHTML(employee) {
   const dob = new Date(employee.dob.date);
   const formattedDOB = dob.toLocaleDateString();
 
-  const modalContDiv = createEl('div', 'modal-container');
+  const modalContDiv = createEl('div', 'modal-container', index);
   const modal = createEl('div', 'modal');
   const modalInfoContainer = createEl('div', 'modal-info-container');
   const button = createEl('button', 'modal-close-btn');
@@ -118,6 +120,9 @@ function createModalHTML(employee) {
 // ------------------------------------------
 
 gallery.addEventListener('click', (e) => {
+  const cardID = e.path[2].id;
+  const indexed = gallery.childNodes;
+
   const clicked = e.path.filter((path) => path.className === 'card')[0];
   const clickedName = clicked.querySelector('#name').textContent;
 
@@ -134,6 +139,26 @@ gallery.addEventListener('click', (e) => {
 
       closeBtn.addEventListener('click', () => {
         modalContainer.style.display = 'none';
+      });
+
+      const modalContainerList = document.getElementsByClassName(
+        'modal-container'
+      );
+
+      modalContainer.childNodes[1].addEventListener('click', (e) => {
+        if (e.path[0].id === 'modal-prev') {
+          console.log('Prev button was pressed!');
+          if (cardID == 0) {
+            modalContainer.style.display = 'none';
+            modalContainerList[11].style.display = 'block';
+          }
+        } else if (e.path[0].id === 'modal-next') {
+          console.log('Next button was pressed!');
+          if (cardID == 11) {
+            modalContainer.style.display = 'none';
+            modalContainerList[0].style.display = 'block';
+          }
+        }
       });
     }
   }
