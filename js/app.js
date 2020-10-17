@@ -131,10 +131,10 @@ gallery.addEventListener('click', (e) => {
 
       const modalContainer = modal.parentNode.parentNode.parentNode;
       modalContainer.style.display = 'block';
-      closeBtn.addEventListener(
-        'click',
-        () => (modalContainer.style.display = 'none')
-      );
+
+      closeBtn.addEventListener('click', () => {
+        modalContainer.style.display = 'none';
+      });
     }
   }
 });
