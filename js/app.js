@@ -114,10 +114,10 @@ search.innerHTML = `<form action="#" method="get">
                     </form>`;
 
 function createGalleryHTML(employee, index) {
-  const pictures = employee.picture; //all three formats
-  const fullName = employee.name; // title, first, and last
+  const pictures = employee.picture;
+  const fullName = employee.name;
   const email = employee.email;
-  const location = employee.location; // lots of location info!
+  const location = employee.location;
 
   const cardDiv = createEl('div', 'card', index);
   const cardImgContainer = createEl('div', 'card-img-container');
