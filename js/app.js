@@ -137,10 +137,10 @@ function createGalleryHTML(employee, index) {
 }
 
 function createModalHTML(employee, index) {
-  const pictures = employee.picture; //all three formats
-  const fullName = employee.name; // title, first, and last
+  const pictures = employee.picture;
+  const fullName = employee.name;
   const email = employee.email;
-  const location = employee.location; // lots of location info!
+  const location = employee.location;
   const cell = employee.cell;
   const dob = new Date(employee.dob.date);
   const formattedDOB = dob.toLocaleDateString();
