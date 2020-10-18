@@ -1,7 +1,8 @@
 const gallery = document.getElementById('gallery');
+const modals = document.getElementById('modals');
 const body = gallery.parentNode;
 const search = document.querySelector('.search-container');
-const modalBtnCont = document.getElementsByClassName('modal-btn-container');
+const modalContainerList = document.getElementsByClassName('modal-container');
 const numOfAPIresults = 12;
 
 // ------------------------------------------
@@ -82,6 +83,7 @@ function createModalHTML(employee, index) {
   const dob = new Date(employee.dob.date);
   const formattedDOB = dob.toLocaleDateString();
 
+  const modalDiv = createEl('div', 'modal-div');
   const modalContDiv = createEl('div', 'modal-container', index);
   const modal = createEl('div', 'modal');
   const modalInfoContainer = createEl('div', 'modal-info-container');
@@ -102,7 +104,7 @@ function createModalHTML(employee, index) {
 
   modalInfoContainer.innerHTML = infoContHTML;
 
-  body.appendChild(modalContDiv);
+  modals.appendChild(modalContDiv);
   modalContDiv.appendChild(modal);
   modal.appendChild(button);
   modal.appendChild(modalInfoContainer);
@@ -118,48 +120,51 @@ function createModalHTML(employee, index) {
 // ------------------------------------------
 //  EVENT LISTENERS
 // ------------------------------------------
-
 gallery.addEventListener('click', (e) => {
-  const cardID = e.path[2].id;
-  const indexed = gallery.childNodes;
+  cardID = e.path.filter((path) => path.className === 'card')[0].id;
+  for (let modal of modalContainerList) {
+    const modalID = modal.id;
+    if (cardID === modalID) {
+      modal.style.display = 'block';
+    }
+  }
+});
+modals.addEventListener('click', (e) => {
+  modalID = parseInt(
+    e.path.filter((path) => path.className === 'modal-container')[0].id
+  );
+  let showID;
+  if (e.target.textContent === 'X') {
+    modals.childNodes[modalID].style.display = 'none';
+  }
+  if (e.target.textContent === 'Prev') {
+    if (modalID == 0) {
+      showID = 11;
+    } else {
+      showID = modalID - 1;
+    }
+    modals.childNodes[modalID].style.display = 'none';
+    modals.childNodes[showID].style.display = 'block';
+  }
+  if (e.target.textContent === 'Next') {
+    if (modalID == 11) {
+      showID = 0;
+    } else {
+      showID = modalID + 1;
+    }
+    modals.childNodes[modalID].style.display = 'none';
+    modals.childNodes[showID].style.display = 'block';
+  }
+});
+search.addEventListener('keyup', (e) => {
+  const input = search.childNodes[0].childNodes[1].value;
+  for (let card of gallery.childNodes) {
+    const name = card.childNodes[1].childNodes[0].textContent;
 
-  const clicked = e.path.filter((path) => path.className === 'card')[0];
-  const clickedName = clicked.querySelector('#name').textContent;
-
-  const modals = document.getElementsByClassName('modal-name');
-  for (let modal of modals) {
-    const modalName = modal.textContent;
-    if (clickedName === modalName) {
-      const closeBtn = modal.parentNode.parentNode.querySelector(
-        '#modal-close-btn'
-      );
-
-      const modalContainer = modal.parentNode.parentNode.parentNode;
-      modalContainer.style.display = 'block';
-
-      closeBtn.addEventListener('click', () => {
-        modalContainer.style.display = 'none';
-      });
-
-      const modalContainerList = document.getElementsByClassName(
-        'modal-container'
-      );
-
-      modalContainer.childNodes[1].addEventListener('click', (e) => {
-        if (e.path[0].id === 'modal-prev') {
-          console.log('Prev button was pressed!');
-          if (cardID == 0) {
-            modalContainer.style.display = 'none';
-            modalContainerList[11].style.display = 'block';
-          }
-        } else if (e.path[0].id === 'modal-next') {
-          console.log('Next button was pressed!');
-          if (cardID == 11) {
-            modalContainer.style.display = 'none';
-            modalContainerList[0].style.display = 'block';
-          }
-        }
-      });
+    if (!name.includes(input)) {
+      card.style.display = 'none';
+    } else if (name.includes(input) && card.style.display === 'none') {
+      card.style.display = 'block';
     }
   }
 });
