@@ -51,6 +51,68 @@ const createEl = (elem, claName, index) => {
   return e;
 };
 
+// ------------------------------------------
+//  EVENT LISTENERS
+// ------------------------------------------
+gallery.addEventListener('click', (e) => {
+  cardID = e.path.filter((path) => path.className === 'card')[0].id;
+  for (let modal of modalContainerList) {
+    const modalID = modal.id;
+    if (cardID === modalID) {
+      modal.style.display = 'block';
+    }
+  }
+});
+modals.addEventListener('click', (e) => {
+  modalID = parseInt(
+    e.path.filter((path) => path.className === 'modal-container')[0].id
+  );
+  let showID;
+  if (e.target.textContent === 'X') {
+    modals.childNodes[modalID].style.display = 'none';
+  }
+  if (e.target.textContent === 'Prev') {
+    if (modalID == 0) {
+      showID = 11;
+    } else {
+      showID = modalID - 1;
+    }
+    modals.childNodes[modalID].style.display = 'none';
+    modals.childNodes[showID].style.display = 'block';
+  }
+  if (e.target.textContent === 'Next') {
+    if (modalID == 11) {
+      showID = 0;
+    } else {
+      showID = modalID + 1;
+    }
+    modals.childNodes[modalID].style.display = 'none';
+    modals.childNodes[showID].style.display = 'block';
+  }
+});
+search.addEventListener('keyup', (e) => {
+  const input = search.childNodes[0].childNodes[1].value;
+  for (let card of gallery.childNodes) {
+    const name = card.childNodes[1].childNodes[0].textContent;
+
+    if (!name.includes(input)) {
+      card.style.display = 'none';
+    } else if (name.includes(input) && card.style.display === 'none') {
+      card.style.display = 'block';
+    } else if (input.length === 0) {
+      card.style.display = 'block';
+    }
+  }
+});
+
+// ------------------------------------------
+//  HTML
+// ------------------------------------------
+search.innerHTML = `<form action="#" method="get">
+                    <input type="search" id="search-input" class="search-input" placeholder="Search...">
+                    <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
+                    </form>`;
+
 function createGalleryHTML(employee, index) {
   const pictures = employee.picture; //all three formats
   const fullName = employee.name; // title, first, and last
@@ -116,63 +178,3 @@ function createModalHTML(employee, index) {
 
   modalContDiv.style.display = 'none';
 }
-
-// ------------------------------------------
-//  EVENT LISTENERS
-// ------------------------------------------
-gallery.addEventListener('click', (e) => {
-  cardID = e.path.filter((path) => path.className === 'card')[0].id;
-  for (let modal of modalContainerList) {
-    const modalID = modal.id;
-    if (cardID === modalID) {
-      modal.style.display = 'block';
-    }
-  }
-});
-modals.addEventListener('click', (e) => {
-  modalID = parseInt(
-    e.path.filter((path) => path.className === 'modal-container')[0].id
-  );
-  let showID;
-  if (e.target.textContent === 'X') {
-    modals.childNodes[modalID].style.display = 'none';
-  }
-  if (e.target.textContent === 'Prev') {
-    if (modalID == 0) {
-      showID = 11;
-    } else {
-      showID = modalID - 1;
-    }
-    modals.childNodes[modalID].style.display = 'none';
-    modals.childNodes[showID].style.display = 'block';
-  }
-  if (e.target.textContent === 'Next') {
-    if (modalID == 11) {
-      showID = 0;
-    } else {
-      showID = modalID + 1;
-    }
-    modals.childNodes[modalID].style.display = 'none';
-    modals.childNodes[showID].style.display = 'block';
-  }
-});
-search.addEventListener('keyup', (e) => {
-  const input = search.childNodes[0].childNodes[1].value;
-  for (let card of gallery.childNodes) {
-    const name = card.childNodes[1].childNodes[0].textContent;
-
-    if (!name.includes(input)) {
-      card.style.display = 'none';
-    } else if (name.includes(input) && card.style.display === 'none') {
-      card.style.display = 'block';
-    }
-  }
-});
-
-// ------------------------------------------
-//  HTML
-// ------------------------------------------
-search.innerHTML = `<form action="#" method="get">
-                    <input type="search" id="search-input" class="search-input" placeholder="Search...">
-                    <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
-                    </form>`;
