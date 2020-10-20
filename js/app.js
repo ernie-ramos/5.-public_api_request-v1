@@ -91,9 +91,10 @@ modals.addEventListener('click', (e) => {
   }
 });
 search.addEventListener('keyup', (e) => {
-  const input = search.childNodes[0].childNodes[1].value;
+  const input = search.childNodes[0].childNodes[1].value.toLowerCase();
   for (let card of gallery.childNodes) {
-    const name = card.childNodes[1].childNodes[0].textContent;
+    const name = card.childNodes[1].childNodes[0].textContent.toLowerCase();
+    console.log(name);
 
     if (!name.includes(input)) {
       card.style.display = 'none';
