@@ -22,7 +22,7 @@ function fetchData(url) {
 
 Promise.all([
   fetchData(
-    `https://randomuser.me/api/?results=${numOfAPIresults}&inc=picture,name,email,location,cell,dob&nat=us,gb,au,ca`
+    `https://randomuser.me/api/?results=${numOfAPIresults}&inc=picture,name,email,location,cell,dob&nat=us`
   ),
 ]).then((data) => {
   data.forEach((employees) => {
