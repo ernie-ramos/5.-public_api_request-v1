@@ -171,10 +171,10 @@ function createModalHTML(employee, index) {
   modal.appendChild(button);
   modal.appendChild(modalInfoContainer);
 
-  // const btnCont = createEl('div', 'modal-btn-container');
-  // btnCont.innerHTML = `<button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
-  //                       <button type="button" id="modal-next" class="modal-next btn">Next</button>`;
-  // modalContDiv.appendChild(btnCont);
+  const btnCont = createEl('div', 'modal-btn-container');
+  btnCont.innerHTML = `<button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
+                        <button type="button" id="modal-next" class="modal-next btn">Next</button>`;
+  modalContDiv.appendChild(btnCont);
 
   modalContDiv.style.display = 'none';
 }
